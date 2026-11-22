@@ -1,0 +1,122 @@
+# Configuration de la veille. Tout est modifiable ici, sans toucher au code.
+
+provider: gemini
+
+# Modèles Gemini essayés dans l'ordre. Si un modèle n'existe plus, n'est pas
+# gratuit ou a épuisé son quota, le suivant est utilisé automatiquement.
+modeles:
+  # Veille : tri et lecture des pages d'offres (rapide, quota élevé)
+  flash: [gemini-2.5-flash, gemini-3.8-flash, gemini-3.6-flash, gemini-3-flash-preview, gemini-2.5-flash-lite]
+  # Rédaction des lettres et CV (meilleure qualité), repli sur Flash
+  pro: [gemini-2.5-pro, gemini-3.8-flash, gemini-3.6-flash, gemini-2.5-flash]
+  # Recherche web intégrée (Grounding Google Search) : gratuite seulement sur
+  # ces modèles en novembre 2026. Si elle disparaît, la veille continue avec
+  # les autres sources.
+  recherche: [gemini-2.5-flash, gemini-2.5-flash-lite]
+
+# Pause entre deux appels (secondes) pour rester sous les limites gratuites
+pause_entre_appels: 6
+
+veille:
+  max_verifications_par_jour: 14
+  angles_par_jour: 6
+  # Résumé public des centres d'intérêt, utilisé pour noter la pertinence.
+  # Le profil complet reste dans le secret PROFIL_CANDIDAT.
+  profil_veille: >
+    Titulaire d'un master en informatique (Université de Ngaoundéré, Cameroun),
+    candidat international hors UE/EEE. Publication premier auteur sur les mises
+    à jour OTA par BLE pour l'IoT contraint (ESP32). Intérêts : gouvernance des
+    données, vie privée, IA et data science, IoT, réseaux sans fil, edge
+    computing, systèmes distribués, cybersécurité, agriculture numérique.
+    Pas de GRE ni de test d'anglais officiel pour l'instant. Cherche uniquement
+    des doctorats (ou masters) financés.
+  mots_cles_domaine: [iot, internet of things, edge, wireless, sans fil, network, réseau, distributed,
+    distribué, privacy, vie privée, data governance, gouvernance, data science, données, machine learning,
+    apprentissage, artificial intelligence, " ai ", " ia ", security, sécurité, cyber, agri, crop, soil,
+    sensor, capteur, embedded, embarqué, federated, llm, trustworthy, confiance]
+  mots_cles_doctorat: [phd, ph.d, doctoral, doctorate, doctorant, doctorante, thèse, these, doktorand, promotion, dphil, studentship]
+
+sources:
+  inria:
+    - https://jobs.inria.fr/public/classic/fr/offres
+    - https://jobs.inria.fr/public/classic/en/offres
+  # Universités qui publient leurs offres sur Varbi (flux RSS public)
+  varbi: [kth, oulunyliopisto, su, uu, liu, lu, gu, umu, ltu, slu, kau, mau, miun, du, hig, his, bth, lnu]
+  # Pages de listes d'offres : on garde les liens qui correspondent au motif
+  pages_liste:
+    - url: https://www.iacr.org/jobs/
+      motif: "/jobs/item/\\d+"
+    - url: https://www.jobbnorge.no/en/available-jobs?Keywords=phd
+      motif: "/available-jobs/job/\\d+"
+
+# 30 angles de recherche web qui tournent : 6 par jour, tout le cycle en 5 jours
+angles:
+  - fully funded PhD position IoT wireless networks
+  - funded PhD edge computing distributed systems
+  - PhD position data governance data sharing
+  - PhD studentship privacy-preserving machine learning
+  - doctoral researcher trustworthy AI security
+  - PhD position digital agriculture machine learning
+  - funded PhD precision agriculture sensors IoT
+  - PhD smart farming data science scholarship international students
+  - MSCA doctoral network 2027 PhD networks AI
+  - thèse financée gouvernance des données
+  - offre de thèse IoT réseaux contrat doctoral
+  - thèse CIFRE intelligence artificielle données agriculture
+  - PhD scholarship Africa computer science fully funded
+  - PhD position federated learning edge devices
+  - doctoral position cybersecurity IoT embedded systems
+  - PhD vacancy data spaces sovereignty
+  - PhD position knowledge graphs data integration
+  - funded PhD AI for environment climate agriculture
+  - PhD position LLM agents security
+  - PhD studentship international fees covered computer science 2027
+  - PhD Canada computer science funded international IoT
+  - PhD Asia scholarship computer science 2027 international
+  - doctorat financé Québec informatique données
+  - PhD position Netherlands data privacy 2027
+  - PhD position Germany TV-L E13 privacy security
+  - PhD position Nordic doctoral student computer networks
+  - funded master scholarship data science international students 2027
+  - PhD position remote sensing deep learning agriculture Africa
+  - doctoral candidate sensor networks energy harvesting
+  - PhD position responsible AI governance accountability
+
+candidature:
+  # Mots et tournures interdits (consigne d'Ebenezer + guide). Insensible à la casse.
+  mots_interdits:
+    - passionate
+    - passion for
+    - thrilled
+    - excited to
+    - leverage
+    - cutting-edge
+    - cutting edge
+    - I am confident that
+    - unique opportunity
+    - keen interest
+    - I am writing to express
+    - robust
+    - extensive
+    - proven track record
+    - dedicated
+    - delve
+    - tapestry
+    - spearhead
+    - passionné
+    - passionnée
+    - opportunité unique
+    - je me permets
+    - vif intérêt
+    - de pointe
+  ouvertures_interdites:
+    - I am applying
+    - I am writing
+    - I would like to apply
+    - Je vous écris
+    - Je souhaite postuler
+    - Je me permets
+    - Suite à
+    - Par la présente
+  mots_min: 350
+  mots_max: 600

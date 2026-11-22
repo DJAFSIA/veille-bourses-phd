@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="{{ langue }}">
+<head>
+<meta charset="utf-8">
+<title>{{ cv.nom }}</title>
+<style>
+  /* Une colonne, cadre bleu double sur chaque page, titres à empattements (style des diplômes) */
+  @page { size: A4; margin: 11mm; border: 4.5px double #1d4e89; padding: 9mm 11mm;
+          @bottom-right { content: counter(page) " / " counter(pages); font: 8pt "DejaVu Sans", sans-serif; color: #6b7a8c; } }
+  body { font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif; font-size: 9.6pt; line-height: 1.38; color: #1b2430; margin: 0; }
+  h1, h2, .titre-entree { font-family: "DejaVu Serif", "Liberation Serif", Georgia, serif; }
+  header { text-align: center; padding-bottom: 6pt; border-bottom: 1.2pt solid #1d4e89; margin-bottom: 8pt; }
+  h1 { font-size: 21pt; letter-spacing: .04em; margin: 0 0 2pt; color: #12355f; font-weight: bold; }
+  .sous-titre { font-size: 10.5pt; color: #1d4e89; margin-bottom: 3pt; }
+  .contact { font-size: 8.6pt; color: #3d4b5c; }
+  .profil { margin: 0 0 8pt; font-style: italic; color: #2b3a4c; }
+  h2 { font-size: 11.5pt; color: #12355f; text-transform: uppercase; letter-spacing: .07em; margin: 10pt 0 4pt;
+       padding-bottom: 1.5pt; border-bottom: .6pt solid #9fb3cc; page-break-after: avoid; }
+  .entree { margin: 0 0 5pt; page-break-inside: avoid; }
+  .ligne { display: flex; justify-content: space-between; gap: 10pt; }
+  .titre-entree { font-weight: bold; font-size: 10pt; }
+  .titre-entree.long { font-weight: normal; }
+  .dates { white-space: nowrap; color: #3d4b5c; font-size: 9pt; }
+  .org { color: #2b3a4c; }
+  ul { margin: 2pt 0 0 13pt; padding: 0; }
+  li { margin: 0 0 1pt; }
+</style>
+</head>
+<body>
+<header>
+  <h1>{{ cv.nom }}</h1>
+  {% if cv.titre %}<div class="sous-titre">{{ cv.titre }}</div>{% endif %}
+  <div class="contact">{{ cv.contact | join("  ·  ") }}</div>
+</header>
+{% if cv.profil %}<p class="profil">{{ cv.profil }}</p>{% endif %}
+{% for s in cv.sections %}
+<section>
+  <h2>{{ s.titre }}</h2>
+  {% for e in s.entrees %}
+  <div class="entree">
+    <div class="ligne"><span class="titre-entree{% if (e.titre or "")|length > 90 %} long{% endif %}">{{ e.titre | gras }}</span><span class="dates">{{ e.dates }}</span></div>
+    {% if e.organisation or e.lieu %}<div class="org">{{ e.organisation }}{% if e.organisation and e.lieu %}, {% endif %}{{ e.lieu }}</div>{% endif %}
+    {% if e.details %}<ul>{% for d in e.details %}<li>{{ d | gras }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,59 @@
+name: Veille quotidienne
+
+on:
+  schedule:
+    - cron: "17 5 * * *"   # 06 h 17 au Cameroun (UTC+1)
+  workflow_dispatch:
+    inputs:
+      sans_envoi:
+        description: "Mettre à jour sans envoyer d'email ni de message Telegram"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: donnees
+  cancel-in-progress: false
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Chercher et vérifier les nouvelles offres
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GMAIL_ADRESSE: ${{ secrets.GMAIL_ADRESSE }}
+          GMAIL_MOT_DE_PASSE_APP: ${{ secrets.GMAIL_MOT_DE_PASSE_APP }}
+          EMAIL_DESTINATAIRE: ${{ secrets.EMAIL_DESTINATAIRE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ inputs.sans_envoi }}" = "true" ]; then
+            python -m veille.run_veille --sans-envoi
+          else
+            python -m veille.run_veille
+          fi
+      - name: Enregistrer les données
+        run: |
+          git config user.name "veille-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then echo "Rien de nouveau"; exit 0; fi
+          git commit -m "Veille du $(TZ=Africa/Douala date +%Y-%m-%d)"
+          git pull --rebase
+          git push
+
+  tableau:
+    needs: veille
+    uses: ./.github/workflows/pages.yml

@@ -1,0 +1,561 @@
+{
+ "aalto-msca-edge-datacenter-2026": {
+  "statut": "nouvelle"
+ },
+ "aalto-trustworthy-ml-2026": {
+  "documents": [
+   {
+    "nom": "Dossier unique déposé sur Workday (CV, bio, projet de recherche, référents, diplômes, relevés, mémoire)",
+    "note": "3,8 Mo, déposé le 31/10 avant la clôture",
+    "type": "PDF"
+   }
+  ],
+  "postule_le": "2026-10-31",
+  "relance_le": "2026-11-14",
+  "statut": "postule"
+ },
+ "barkhausen-ppml-2026": {
+  "statut": "postule"
+ },
+ "bi-data-decision-2027": {
+  "statut": "nouvelle"
+ },
+ "chalmers-web-security-2026": {
+  "statut": "nouvelle"
+ },
+ "cispa-human-centered-privacy-2026": {
+  "statut": "nouvelle"
+ },
+ "cs-maxplanck-2027": {
+  "statut": "nouvelle"
+ },
+ "cwi-crypto-hw-security-2026": {
+  "statut": "nouvelle"
+ },
+ "edinburgh-cdt-ml-systems-2027": {
+  "statut": "nouvelle"
+ },
+ "edinburgh-cyber-privacy-trust-2027": {
+  "statut": "nouvelle"
+ },
+ "edinburgh-responsible-nlp-cdt-2027": {
+  "statut": "nouvelle"
+ },
+ "ellis-phd-2027": {
+  "documents": [
+   {
+    "nom": "Lettre de motivation et énoncé de recherche (2 pages)",
+    "note": "brouillon, encadrants à ajouter",
+    "type": "Lettre"
+   },
+   {
+    "nom": "CV (style diplômes)",
+    "note": "prêt",
+    "type": "CV"
+   },
+   {
+    "nom": "Relevés L1–M2 bilingues + diplômes",
+    "note": "prêts",
+    "type": "Pièces"
+   }
+  ],
+  "statut": "ecartee"
+ },
+ "epfl-edic-2027": {
+  "statut": "nouvelle"
+ },
+ "ets-c5i": {
+  "statut": "preparation"
+ },
+ "glasgow-socs-2027": {
+  "statut": "nouvelle"
+ },
+ "goettingen-privacy-76750-2026": {
+  "statut": "nouvelle"
+ },
+ "hkpfs-2027": {
+  "statut": "nouvelle"
+ },
+ "hokudai-e3-mext-2027": {
+  "statut": "ecartee"
+ },
+ "hsg-icv-wireless-sensing-iot-2026": {
+  "statut": "nouvelle"
+ },
+ "iapetus-newcastle-ppai-water-2027": {
+  "statut": "nouvelle"
+ },
+ "ibm-zurich-2026-022-proof-systems": {
+  "statut": "nouvelle"
+ },
+ "ihp-embedded-ai-platforms-3033-26": {
+  "statut": "nouvelle"
+ },
+ "imec-msca-aircomp-edge-ai-2026": {
+  "statut": "nouvelle"
+ },
+ "imperial-hybrid-ml-agri-systems": {
+  "statut": "nouvelle"
+ },
+ "imprs-is-2027": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10166": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10352": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10415": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10416": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10454": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10501": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10542": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10570": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10584": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10585": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10599": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10608": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10612": {
+  "documents": [
+   {
+    "nom": "CV (style diplômes, orienté web + sécurité)",
+    "note": "prêt",
+    "type": "CV"
+   },
+   {
+    "nom": "Lettre (accroche mise à jour silencieuse), relue",
+    "note": "lire le résumé de DoubleX avant l'envoi",
+    "type": "Lettre"
+   },
+   {
+    "nom": "Relevés L1–M2 (barème de notes inclus)",
+    "note": "prêt",
+    "type": "Pièces"
+   },
+   {
+    "nom": "Attestations master + maîtrise",
+    "note": "prêt",
+    "type": "Pièces"
+   },
+   {
+    "nom": "Résumé du mémoire (1 page)",
+    "note": "prêt",
+    "type": "Pièces"
+   }
+  ],
+  "statut": "preparation"
+ },
+ "inria-2026-10614": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10632": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10638": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10647": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10676": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10684": {
+  "statut": "nouvelle"
+ },
+ "inria-2026-10685": {
+  "statut": "nouvelle"
+ },
+ "insait-phd-rolling-2027": {
+  "statut": "nouvelle"
+ },
+ "ista-phd-2027": {
+  "statut": "nouvelle"
+ },
+ "kaist-intl-fall-2027": {
+  "statut": "nouvelle"
+ },
+ "kaust-phd-fall-2027-r2": {
+  "statut": "nouvelle"
+ },
+ "kit-kastel-pets-2026": {
+  "statut": "nouvelle"
+ },
+ "kochi-tech-ssp-oct-2027": {
+  "statut": "nouvelle"
+ },
+ "kth-agentic-ai-manufacturing-2026": {
+  "statut": "nouvelle"
+ },
+ "kth-nss-2026": {
+  "statut": "nouvelle"
+ },
+ "kth-probabilistic-ml-fluids-2026": {
+  "statut": "nouvelle"
+ },
+ "kuleuven-vkg-edge-ai-2026": {
+  "statut": "postule"
+ },
+ "lboro-2027-lu01-eco-iot": {
+  "statut": "nouvelle"
+ },
+ "lboro-2027-lu05-soil-ai": {
+  "statut": "nouvelle"
+ },
+ "lboro-irisk-27-lu09-agentic-ai-flood": {
+  "statut": "nouvelle"
+ },
+ "lboro-irisk-27-lu13-ai-nature": {
+  "statut": "nouvelle"
+ },
+ "leiden-complex-networks-2026": {
+  "statut": "nouvelle"
+ },
+ "leiden-population-network-science-2026": {
+  "statut": "nouvelle"
+ },
+ "liuppa-rna": {
+  "statut": "postule"
+ },
+ "mbzuai-crypto-privacy-2026": {
+  "statut": "nouvelle"
+ },
+ "mcml-phd-call-2027": {
+  "statut": "nouvelle"
+ },
+ "miami-agentic-ai-security-2027": {
+  "statut": "nouvelle"
+ },
+ "mila-supervision-2027": {
+  "statut": "nouvelle"
+ },
+ "ncsu-irrigation-dss": {
+  "statut": "nouvelle"
+ },
+ "njit-privacy-crypto-2027": {
+  "statut": "nouvelle"
+ },
+ "nmsu-niu-ai-agriculture": {
+  "statut": "nouvelle"
+ },
+ "ntnu-cryptology-social-life-311003": {
+  "statut": "nouvelle"
+ },
+ "ntnu-privacy-digital-wallets-2026": {
+  "statut": "nouvelle"
+ },
+ "ntnu-quantum-safe-credentials-2026": {
+  "statut": "nouvelle"
+ },
+ "ntu-sg-secure-computation-2027": {
+  "statut": "nouvelle"
+ },
+ "nus-chocolab-hw-security-2027": {
+  "statut": "nouvelle"
+ },
+ "nus-soc-phd-2027": {
+  "statut": "nouvelle"
+ },
+ "oist-phd-2027": {
+  "statut": "nouvelle"
+ },
+ "oldenburg-trustworthy-ai-2026": {
+  "statut": "nouvelle"
+ },
+ "open-univ-stem-cc-27j": {
+  "statut": "nouvelle"
+ },
+ "orebro-secure-distributed-ai-2026": {
+  "documents": [
+   {
+    "nom": "CV (style diplômes)",
+    "note": "déposé le 31/10",
+    "type": "CV"
+   },
+   {
+    "nom": "Research interests (1 page)",
+    "note": "déposé le 31/10",
+    "type": "Énoncé"
+   },
+   {
+    "nom": "Relevés licence L1–L3",
+    "note": "déposés ; attestation de licence manquante, à ajouter si disponible avant la clôture",
+    "type": "Pièces"
+   },
+   {
+    "nom": "Attestations master + maîtrise, relevés M1–M2",
+    "note": "déposés le 31/10",
+    "type": "Pièces"
+   },
+   {
+    "nom": "Mémoire de master",
+    "note": "déposé le 31/10",
+    "type": "Pièces"
+   }
+  ],
+  "postule_le": "2026-10-31",
+  "relance_le": "2026-11-16",
+  "statut": "postule"
+ },
+ "orleans-lifo-privacy-rl-2026": {
+  "statut": "nouvelle"
+ },
+ "oulu-smartspaces-2026": {
+  "statut": "nouvelle"
+ },
+ "oxford-intelligent-earth-cdt-2027": {
+  "statut": "nouvelle"
+ },
+ "oxford-taig-dphil-2027": {
+  "statut": "nouvelle"
+ },
+ "polyu-crypto-cyber-phd-2026": {
+  "statut": "nouvelle"
+ },
+ "qub-aiot-hardware-security-2027": {
+  "statut": "nouvelle"
+ },
+ "rmit-iot-security-phd": {
+  "statut": "nouvelle"
+ },
+ "sdu-imada-foundation-models-marl-2026": {
+  "statut": "nouvelle"
+ },
+ "sfu-computing-phd-fall-2027": {
+  "statut": "nouvelle"
+ },
+ "singa-2027": {
+  "statut": "nouvelle"
+ },
+ "southampton-ai-cyber-trustworthy-2027": {
+  "statut": "nouvelle"
+ },
+ "stevens-crypto-databases-2027": {
+  "statut": "nouvelle"
+ },
+ "tartu-pqc-engineering-2026": {
+  "statut": "nouvelle"
+ },
+ "tcd-privacy-leith": {
+  "statut": "nouvelle"
+ },
+ "tigp-sinica-2027": {
+  "statut": "nouvelle"
+ },
+ "tsinghua-csc-intl-phd-2027": {
+  "statut": "nouvelle"
+ },
+ "tudelft-district-heating-data-2026": {
+  "statut": "nouvelle"
+ },
+ "tudelft-energy-data-sharing-twins-2026": {
+  "statut": "nouvelle"
+ },
+ "tudelft-genai-sovereignty-2026": {
+  "documents": [
+   {
+    "nom": "CV (style diplômes, adapté edge + LLM)",
+    "note": "PDF envoyé le 31/10",
+    "type": "CV"
+   },
+   {
+    "nom": "Lettre de motivation (accroche CvGen / Ollama), relue",
+    "note": "PDF envoyé le 31/10",
+    "type": "Lettre"
+   },
+   {
+    "nom": "Relevés L1–M2 et diplômes",
+    "note": "PDF compressé 1,8 Mo",
+    "type": "Pièces"
+   },
+   {
+    "nom": "Mémoire de master",
+    "note": "PDF 2 Mo",
+    "type": "Pièces"
+   }
+  ],
+  "postule_le": "2026-10-31",
+  "relance_le": "2026-11-14",
+  "statut": "postule"
+ },
+ "tudelft-participatory-data-governance-2026": {
+  "statut": "nouvelle"
+ },
+ "tuwien-edge-ai-drones-2026": {
+  "statut": "nouvelle"
+ },
+ "uef-data-ai-spatial-2026": {
+  "statut": "nouvelle"
+ },
+ "ugent-waves-6g-ntn-2026": {
+  "statut": "nouvelle"
+ },
+ "ugent-waves-emf-twin-2026": {
+  "statut": "nouvelle"
+ },
+ "uio-edge-control-2026": {
+  "documents": [
+   {
+    "lien": "https://claude.ai/artifact/HJsHFdcLiJ8btwS1DMLFPH",
+    "nom": "Lettre – UiO – Edge Computing Control",
+    "type": "lettre"
+   },
+   {
+    "lien": "https://claude.ai/artifact/Dw9sR1bScZaTBFXxiHC19X",
+    "nom": "CV – UiO – Edge Computing Control",
+    "type": "cv"
+   }
+  ],
+  "statut": "preparation"
+ },
+ "uio-llm-cyber-defense-2026": {
+  "statut": "nouvelle"
+ },
+ "umanitoba-smart-digital-agri-2027": {
+  "statut": "nouvelle"
+ },
+ "uni-lu-sedan-2026": {
+  "statut": "nouvelle"
+ },
+ "unilu-ml-official-statistics-2026": {
+  "documents": [
+   {
+    "lien": "https://claude.ai/artifact/1wFPt4RTdveQwJjiqH6ZSN",
+    "nom": "CV (nouveau design, envoyé)",
+    "note": "PDF envoyé le 31/10",
+    "type": "CV"
+   },
+   {
+    "lien": "https://claude.ai/artifact/HFWjVGD3ELvvPgR2BdJFBy",
+    "nom": "Lettre de motivation (Dr Cordy)",
+    "note": "PDF envoyé le 31/10",
+    "type": "Lettre"
+   },
+   {
+    "lien": "https://claude.ai/artifact/1rWeKT9VHSe4rJvCako1YP",
+    "nom": "Énoncé de recherche (261 mots)",
+    "note": "PDF envoyé le 31/10",
+    "type": "Énoncé"
+   },
+   {
+    "nom": "Diplômes (master + maîtrise) et relevés M2 à L1",
+    "note": "déposés le 31/10",
+    "type": "Pièces"
+   },
+   {
+    "lien": "https://claude.ai/artifact/VtvyYMjRZ1pKXwxCA3K8xp",
+    "nom": "Préparation à l'entretien",
+    "note": "plan sur 7 jours",
+    "type": "Entretien"
+   }
+  ],
+  "postule_le": "2026-10-31",
+  "relance_le": "2026-11-14",
+  "statut": "postule"
+ },
+ "unilu-ml-security-testing-2026": {
+  "documents": [
+   {
+    "lien": "https://claude.ai/artifact/7Zaxw8hJSRzfep86f7PRtt",
+    "nom": "CV (nouveau design, envoyé)",
+    "note": "PDF envoyé le 31/10",
+    "type": "CV"
+   },
+   {
+    "lien": "https://claude.ai/artifact/BZ91rgTKTN9MXzmLYFoNuo",
+    "nom": "Lettre de motivation",
+    "note": "PDF envoyé le 31/10",
+    "type": "Lettre"
+   },
+   {
+    "lien": "https://claude.ai/artifact/1XmC8vn5NmvhAUqywfc7Ff",
+    "nom": "Énoncé de recherche (296 mots)",
+    "note": "PDF envoyé le 31/10",
+    "type": "Énoncé"
+   },
+   {
+    "nom": "Diplômes (master + maîtrise) et relevés M2 à L1",
+    "note": "déposés le 31/10",
+    "type": "Pièces"
+   },
+   {
+    "lien": "https://claude.ai/artifact/HbVAJ64WdTfsVxfwroK6M5",
+    "nom": "Préparation à l'entretien",
+    "note": "plan sur 7 jours",
+    "type": "Entretien"
+   }
+  ],
+  "postule_le": "2026-10-31",
+  "relance_le": "2026-11-14",
+  "statut": "postule"
+ },
+ "unilu-traffic-obfuscation-2026": {
+  "statut": "nouvelle"
+ },
+ "unisg-cyber-applied-crypto-2026": {
+  "statut": "nouvelle"
+ },
+ "unisg-data-ai-governance-2026": {
+  "statut": "nouvelle"
+ },
+ "unrisk-cdt-2027": {
+  "statut": "nouvelle"
+ },
+ "usi-applied-crypto-2027": {
+  "statut": "nouvelle"
+ },
+ "utokyo-ist-mext-2027": {
+  "statut": "nouvelle"
+ },
+ "utoronto-cs-phd-fall-2027": {
+  "statut": "nouvelle"
+ },
+ "utsa-spritelab-iot-privacy": {
+  "statut": "ecartee"
+ },
+ "utwente-cocoa-iot-2026": {
+  "statut": "postule"
+ },
+ "uva-ai-governance-regulaire-2026": {
+  "statut": "nouvelle"
+ },
+ "uzh-ai-optimization-2027": {
+  "statut": "nouvelle"
+ },
+ "waterloo-cs-phd-2027": {
+  "statut": "nouvelle"
+ },
+ "wisc-digitalag-phd": {
+  "statut": "nouvelle"
+ },
+ "wur-radar-logging-2026": {
+  "statut": "nouvelle"
+ },
+ "xjtlu-edge-trust-2026": {
+  "statut": "nouvelle"
+ },
+ "xjtlu-xai-cyber-2026": {
+  "statut": "nouvelle"
+ }
+}

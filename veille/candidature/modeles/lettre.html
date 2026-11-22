@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{ langue }}">
+<head>
+<meta charset="utf-8">
+<title>{{ lettre.signature }}</title>
+<style>
+  @page { size: A4; margin: 22mm 24mm; }
+  body { font-family: "DejaVu Serif", "Liberation Serif", Georgia, serif; font-size: 10.8pt; line-height: 1.5; color: #1b2430; }
+  .expediteur { font-size: 9.5pt; color: #3d4b5c; margin-bottom: 14pt; border-bottom: 1pt solid #1d4e89; padding-bottom: 6pt; }
+  .expediteur b { font-size: 12pt; color: #12355f; }
+  .date { text-align: right; margin-bottom: 12pt; }
+  .objet { font-weight: bold; margin-bottom: 12pt; }
+  p { margin: 0 0 9pt; text-align: justify; hyphens: auto; }
+  .signature { margin-top: 16pt; }
+</style>
+</head>
+<body>
+<div class="expediteur"><b>{{ lettre.signature }}</b><br>{{ contact | join("  ·  ") }}</div>
+<div class="date">{{ date }}</div>
+<div class="objet">{{ objet }}</div>
+<p>{{ lettre.salutation }}</p>
+{% for p in lettre.paragraphes %}<p>{{ p }}</p>
+{% endfor %}
+<p>{{ lettre.formule_finale }}</p>
+<div class="signature">{{ lettre.signature }}</div>
+</body>
+</html>

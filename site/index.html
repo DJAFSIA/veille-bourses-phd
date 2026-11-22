@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Veille bourses doctorales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#f5f6f8; --surface:#fff; --ink:#18212b; --muted:#5b6673; --line:#dfe3e8;
+  --accent:#1d5a86; --accent-soft:#e3edf5; --folder:#f0f3f7;
+  --urgent:#b3261e; --urgent-soft:#fbe7e5; --soon:#8a5a00; --soon-soft:#fbf0d9; --ok:#2e6b3a; --ok-soft:#e3f1e5;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#11161c; --surface:#18202a; --ink:#e6ebf0; --muted:#9aa6b3; --line:#2a3440;
+  --accent:#7db4de; --accent-soft:#1c3346; --folder:#1d2731;
+  --urgent:#f2a49d; --urgent-soft:#3b1d1b; --soon:#e8c27a; --soon-soft:#3a2e15; --ok:#9ccfa4; --ok-soft:#1c3221; color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 56px;display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;margin:0}
+.lede{color:var(--muted);margin:4px 0 0;max-width:64ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.88rem;color:var(--muted)}
+.stats b{font-family:var(--mono);color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.filters{display:flex;flex-direction:column;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.chip .n{font-family:var(--mono);font-size:.75rem;opacity:.75;margin-left:4px}
+.selects{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,input[type=search]{font:inherit;font-size:.85rem;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+input[type=search]{flex:1 1 200px;min-width:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:flex;flex-direction:column;gap:12px}
+.offer{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.offer.past{opacity:.6}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:.82rem;color:var(--muted)}
+.lvl,.neuf{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:2px 8px;border-radius:4px}
+.lvl{color:var(--accent);background:var(--accent-soft)}
+.neuf{color:var(--ok);background:var(--ok-soft)}
+.offer h2{font-family:var(--display);font-weight:600;font-size:1.2rem;line-height:1.3;margin:0;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.85rem;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:500}
+.sum{margin:0;font-size:.92rem;max-width:70ch;overflow-wrap:anywhere}
+.due{font-family:var(--mono);font-size:.78rem;padding:2px 8px;border-radius:4px;font-variant-numeric:tabular-nums;margin-left:auto}
+.due.urgent{background:var(--urgent-soft);color:var(--urgent)} .due.soon{background:var(--soon-soft);color:var(--soon)}
+.due.ok{background:var(--ok-soft);color:var(--ok)} .due.none{background:var(--accent-soft);color:var(--muted)}
+.docs{background:var(--folder);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.docs-label{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.docs ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.docs li{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:.88rem}
+.docs a{color:var(--accent);font-weight:600;text-decoration:none}
+.dtype{font-family:var(--mono);font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 6px}
+.bottom{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding-top:8px;border-top:1px solid var(--line);font-size:.85rem}
+.bottom a{color:var(--accent);font-weight:600;text-decoration:none}
+.bottom a:hover{text-decoration:underline}
+.btn{display:inline-block;background:var(--accent);color:var(--bg)!important;padding:5px 12px;border-radius:6px;text-decoration:none!important}
+.contact{font-family:var(--mono);font-size:.76rem;color:var(--muted);overflow-wrap:anywhere}
+.status{margin-left:auto}
+.match{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:28px 20px;color:var(--muted)}
+.note{font-size:.8rem;color:var(--muted)}
+.aide{background:var(--accent-soft);border-radius:8px;padding:10px 14px;font-size:.86rem}
+.aide[hidden]{display:none}
+@media (max-width:520px){.status,.due{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Veille bourses doctorales</h1>
+    <p class="lede">Thèses et masters financés, vérifiés sur leur page officielle et ajoutés chaque matin à 6 h 17 (heure du Cameroun). Triés par date limite, la plus proche en premier.</p>
+  </header>
+  <div class="stats" id="stats"><span>Chargement des offres…</span></div>
+  <div class="filters">
+    <div class="chips" id="chips" role="group" aria-label="Filtrer par statut"></div>
+    <div class="selects">
+      <input type="search" id="f-texte" placeholder="Chercher (titre, pays, domaine, établissement)" aria-label="Chercher">
+      <select id="f-region" aria-label="Région"><option value="">Toutes régions</option><option>Europe</option><option>Amérique</option><option>Asie</option><option>Autre</option></select>
+      <select id="f-niveau" aria-label="Niveau"><option value="">Tous niveaux</option><option>Doctorat</option><option>Master</option></select>
+      <select id="f-tri" aria-label="Tri"><option value="date">Date limite</option><option value="pertinence">Pertinence</option><option value="ajout">Ajout récent</option></select>
+    </div>
+  </div>
+  <div class="aide" id="aide" hidden></div>
+  <main class="list" id="list"></main>
+  <p class="note" id="foot"></p>
+</div>
+<script>
+const STATUTS=[["nouvelle","Nouvelles"],["interesse","Intéressé"],["preparation","En préparation"],["postule","Postulé"],["ecartee","Écartées"]];
+const LABEL={nouvelle:"Nouvelle",interesse:"Intéressé",preparation:"En préparation",postule:"Postulé",ecartee:"Écartée"};
+let offres=[],filtre="actives",depot="";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sur=u=>/^https?:\/\//i.test(String(u||""))?u:"";
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const jours=iso=>{if(!iso)return null;const d=new Date(iso+"T00:00:00");return isNaN(d)?null:Math.round((d-today())/864e5)};
+const fmt=iso=>{const d=new Date(iso+"T00:00:00");return isNaN(d)?iso:d.toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"})};
+function ticket(titre,corps){return depot?`https://github.com/${depot}/issues/new?title=${encodeURIComponent(titre)}&body=${encodeURIComponent(corps)}`:""}
+
+function chips(){
+  const n=k=>k==="actives"?offres.filter(o=>!["postule","ecartee"].includes(o.statut)).length:k==="toutes"?offres.length:offres.filter(o=>o.statut===k).length;
+  $("#chips").innerHTML=[["actives","À traiter"],...STATUTS,["toutes","Toutes"]].map(([k,l])=>`<button class="chip" type="button" data-k="${k}" aria-pressed="${k===filtre}">${l}<span class="n">${n(k)}</span></button>`).join("");
+}
+$("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filtre=b.dataset.k;chips();render()});
+["#f-region","#f-niveau","#f-tri"].forEach(s=>$(s).addEventListener("change",render));
+$("#f-texte").addEventListener("input",render);
+
+function docs(o){
+  const d=Array.isArray(o.documents)?o.documents:[];
+  if(!d.length&&!["preparation","postule"].includes(o.statut))return "";
+  const items=d.map(x=>{const u=sur(x&&x.lien),n=esc(x&&x.nom||"Document");
+    return `<li>${u?`<a href="${esc(u)}" target="_blank" rel="noopener">${n}</a>`:`<span>${n}</span>`}${x.type?`<span class="dtype">${esc(x.type)}</span>`:""}${x.note?`<span class="note">${esc(x.note)}</span>`:""}</li>`}).join("");
+  const suivi=[o.postule_le?`postulé le ${fmt(o.postule_le)}`:"",o.relance_le?`relance prévue le ${fmt(o.relance_le)}`:""].filter(Boolean).join(" · ");
+  return `<div class="docs"><span class="docs-label">Dossier de candidature${suivi?` · ${esc(suivi)}`:""}</span>${items?`<ul>${items}</ul>`:`<span class="note">Aucun document pour l'instant. Les documents préparés arrivent par email et Telegram.</span>`}</div>`;
+}
+
+function render(){
+  const reg=$("#f-region").value,niv=$("#f-niveau").value,tri=$("#f-tri").value,q=$("#f-texte").value.trim().toLowerCase();
+  const act=offres.filter(o=>!["postule","ecartee"].includes(o.statut));
+  const urg=act.filter(o=>{const j=jours(o.date_limite);return j!==null&&j>=0&&j<=14}).length;
+  $("#stats").innerHTML=`<span><b>${offres.length}</b> offres suivies</span><span><b>${offres.filter(o=>o.statut==="nouvelle").length}</b> nouvelles</span><span><b>${urg}</b> échéances sous 14 jours</span><span><b>${offres.filter(o=>o.statut==="postule").length}</b> candidatures envoyées</span>`;
+  let v=offres.filter(o=>{
+    if(filtre==="actives"&&["postule","ecartee"].includes(o.statut))return false;
+    if(!["actives","toutes"].includes(filtre)&&o.statut!==filtre)return false;
+    if(reg&&o.region!==reg)return false; if(niv&&o.niveau!==niv)return false;
+    if(q&&![o.titre,o.pays,o.domaine,o.etablissement,o.resume].join(" ").toLowerCase().includes(q))return false;
+    return true});
+  const cle=o=>{const j=jours(o.date_limite);return j===null?1e6:(j<0?2e6-j:j)};
+  v.sort(tri==="pertinence"?(a,b)=>(b.pertinence||0)-(a.pertinence||0)||cle(a)-cle(b):tri==="ajout"?(a,b)=>String(b.ajoute_le).localeCompare(String(a.ajoute_le)):(a,b)=>cle(a)-cle(b));
+  if(!v.length){$("#list").innerHTML=`<div class="empty"><b>Rien avec ces filtres.</b> Essaie « Toutes » ou change de région.</div>`;return}
+  $("#list").innerHTML=v.map(o=>{
+    const j=jours(o.date_limite);let cls="none",txt="Date limite à vérifier";
+    if(j!==null){txt=(j<0?"Clôturée · ":j===0?"Aujourd'hui · ":`J-${j} · `)+fmt(o.date_limite);cls=j<0?"none":j<=14?"urgent":j<=45?"soon":"ok"}
+    const recent=jours(o.ajoute_le);const neuf=recent!==null&&recent>=-3;
+    const opts=Object.entries(LABEL).map(([k,l])=>`<option value="${k}"${k===o.statut?" selected":""}>${l}</option>`).join("");
+    const lien=sur(o.lien),p=+o.pertinence||0;
+    const prep=ticket(`candidature: ${o.id}`,`Prépare la lettre, le CV et les notes pour : ${o.titre}\n\nClique sur « Submit new issue ». Les documents arrivent par email et Telegram en quelques minutes.`);
+    return `<article class="offer${j!==null&&j<0?" past":""}">
+      <div class="top"><span class="lvl">${esc(o.niveau||"Doctorat")}</span>${neuf?`<span class="neuf">Nouveau</span>`:""}<span>${esc([o.pays,o.etablissement].filter(Boolean).join(" · "))}</span><span class="due ${cls}">${txt}</span></div>
+      <h2>${esc(o.titre)}</h2>
+      <div class="meta">${o.domaine?`<span>Domaine <b>${esc(o.domaine)}</b></span>`:""}${o.financement?`<span>Financement <b>${esc(o.financement)}</b></span>`:""}${o.langue?`<span>Langue <b>${esc(o.langue)}</b></span>`:""}</div>
+      ${o.resume?`<p class="sum">${esc(o.resume)}</p>`:""}
+      ${docs(o)}
+      <div class="bottom">${lien?`<a href="${esc(lien)}" target="_blank" rel="noopener">Voir l'offre</a>`:""}${prep&&!["postule","ecartee"].includes(o.statut)?`<a class="btn" href="${esc(prep)}" target="_blank" rel="noopener">Préparer ma candidature</a>`:""}${o.contact?`<span class="contact">${esc(o.contact)}</span>`:""}${p?`<span class="match" title="Pertinence">${"●".repeat(p)}${"○".repeat(5-p)}</span>`:""}
+      <select class="status" data-id="${esc(o.id)}" aria-label="Statut de l'offre">${opts}</select></div>
+    </article>`}).join("");
+}
+
+$("#list").addEventListener("change",e=>{
+  const s=e.target.closest("select.status");if(!s)return;
+  const o=offres.find(x=>x.id===s.dataset.id);const url=ticket(`statut: ${s.dataset.id} ${s.value}`,`Passe l'offre « ${o?o.titre:s.dataset.id} » au statut : ${LABEL[s.value]}.\n\nClique sur « Submit new issue ». Le tableau de bord se met à jour en une à deux minutes.`);
+  const aide=$("#aide");
+  if(!url){aide.hidden=false;aide.textContent="Dépôt GitHub inconnu : impossible d'enregistrer le statut.";return}
+  aide.hidden=false;aide.innerHTML=`Pour enregistrer « ${esc(LABEL[s.value])} », valide le ticket qui vient de s'ouvrir sur GitHub (bouton <b>Submit new issue</b>). <a href="${esc(url)}" target="_blank" rel="noopener">Rouvrir le ticket</a>`;
+  window.open(url,"_blank","noopener");
+});
+
+(async()=>{
+  try{
+    const [cfg,o,s]=await Promise.all([fetch("config.json").then(r=>r.ok?r.json():{}).catch(()=>({})),fetch("data/offres.json").then(r=>r.json()),fetch("data/statuts.json").then(r=>r.json()).catch(()=>({}))]);
+    depot=cfg.depot||"";
+    if(!depot){const m=location.hostname.match(/^([^.]+)\.github\.io$/);const r=location.pathname.split("/").filter(Boolean)[0];if(m&&r)depot=`${m[1]}/${r}`}
+    offres=o.map(x=>({...x,...(s[x.id]||{}),statut:(s[x.id]&&s[x.id].statut)||"nouvelle"}));
+    chips();render();
+    $("#foot").textContent=cfg.maj?`Dernière mise à jour : ${new Date(cfg.maj).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"})}.`:"";
+  }catch(err){$("#stats").innerHTML="<span>Impossible de charger les offres. Recharge la page.</span>"}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+name: Changer un statut
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: donnees
+  cancel-in-progress: false
+
+jobs:
+  statut:
+    if: github.event.issue.user.login == github.repository_owner && startsWith(github.event.issue.title, 'statut:')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install PyYAML
+      - name: Mettre à jour data/statuts.json
+        env:
+          TITRE_TICKET: ${{ github.event.issue.title }}
+        run: python -m veille.statut "$TITRE_TICKET"
+      - name: Enregistrer et fermer le ticket
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMERO: ${{ github.event.issue.number }}
+          TITRE_TICKET: ${{ github.event.issue.title }}
+        run: |
+          git config user.name "veille-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/statuts.json
+          git diff --cached --quiet || git commit -m "$TITRE_TICKET"
+          git pull --rebase && git push
+          gh issue close "$NUMERO" -R "$GITHUB_REPOSITORY" --comment "Statut enregistré. Le tableau de bord se met à jour dans une minute."
+
+  tableau:
+    needs: statut
+    uses: ./.github/workflows/pages.yml
