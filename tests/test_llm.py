@@ -87,3 +87,11 @@ def test_extraire_json():
     assert extraire_json('Voici : {"b": 2} fin') == {"b": 2}
     with pytest.raises(LLMError):
         extraire_json("pas de json")
+
+
+def test_recherche_desactivee_par_liste_vide():
+    s = SessionGemini({})
+    g = Gemini("cle", {**MODELES, "recherche": []}, pause=0, session=s)
+    with pytest.raises(RechercheIndisponible):
+        g.generer("x", recherche=True)
+    assert s.appels == []

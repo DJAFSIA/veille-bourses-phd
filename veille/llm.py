@@ -127,10 +127,12 @@ class Gemini:
                     r = self.http.post(f"{API}/models/{modele}:generateContent",
                                        headers={"x-goog-api-key": self.cle,
                                                 "Content-Type": "application/json"},
-                                       data=json.dumps(corps), timeout=180)
+                                       data=json.dumps(corps), timeout=90)
                 except requests.RequestException as e:
                     erreurs.append(f"{modele}: réseau ({type(e).__name__})")
-                    continue
+                    log.warning("[%s] %s ne répond pas (%s) : modèle suivant", tache or "appel", modele, type(e).__name__)
+                    self._epuises.add(modele)  # trop lent : on ne le réessaie pas pendant cette exécution
+                    break
                 if r.status_code == 200:
                     rep = self._lire(r.json(), modele)
                     if rep.texte.strip():
@@ -140,6 +142,7 @@ class Gemini:
                     break
                 message = _message(r)
                 erreurs.append(f"{modele}: {r.status_code} {message[:120]}")
+                log.warning("[%s] %s refusé (%s %s)", tache or "appel", modele, r.status_code, message[:100])
                 if r.status_code == 429:
                     bas = message.lower()
                     if "per day" in bas or "perday" in bas or essai:

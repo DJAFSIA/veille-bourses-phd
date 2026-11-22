@@ -2,7 +2,7 @@
 
 Système gratuit qui tourne seul sur GitHub :
 
-- **Veille quotidienne** à 06 h 17 (heure du Cameroun) : Inria, flux Varbi des universités nordiques, offres IACR et Jobbnorge, plus une recherche web par Gemini (30 angles qui tournent). Chaque piste est vérifiée sur sa page officielle : rien n'entre dans la base si la page ne prouve pas que le poste est financé, ou si la date limite est passée.
+- **Veille quotidienne** à 06 h 17 (heure du Cameroun) : Inria, flux Varbi des universités nordiques, offres IACR et Jobbnorge, et une recherche web par Gemini quand elle est disponible gratuitement (30 angles qui tournent). Chaque piste est vérifiée sur sa page officielle : rien n'entre dans la base si la page ne prouve pas que le poste est financé, ou si la date limite est passée.
 - **Tableau de bord** GitHub Pages : toutes les offres, filtres, échéances, documents, changement de statut.
 - **Générateur de candidature** : bouton « Préparer ma candidature » → notes (pièces demandées, 3 accroches, points forts, manques, points à confirmer), lettre (PDF + Markdown, relue par l'IA et par des contrôles automatiques) et CV PDF (une colonne, cadre bleu double). Envoyés par email et Telegram, jamais publiés.
 
@@ -17,7 +17,7 @@ Le tableau de bord sera à l'adresse `https://djafsia.github.io/veille-bourses-p
 ### 2. Créer la clé Gemini (gratuite)
 1. Va sur https://aistudio.google.com/apikey avec ton compte Google.
 2. Accepte les conditions, puis **Create API key** (« Créer une clé API »). Choisis ou crée un projet Google Cloud ; ne relie **aucun** compte de facturation : la clé reste gratuite.
-3. Copie la clé (elle commence par `AIza`). Ne la partage avec personne.
+3. Copie la clé (selon le compte, elle commence par `AIza` ou `AQ.`). Ne la partage avec personne.
 
 ### 3. Préparer Gmail (mot de passe d'application)
 1. Active la validation en deux étapes : https://myaccount.google.com/signinoptions/two-step-verification
@@ -58,7 +58,7 @@ Relis toujours la lettre et le CV avant d'envoyer : `notes.md` liste ce qui rest
 ## Bon à savoir
 
 - **Quotas gratuits** : ils changent souvent. Les modèles sont listés dans `config.yaml` et essayés dans l'ordre ; si l'un disparaît ou n'a plus de quota, le suivant prend le relais.
-- **Recherche web Gemini** : en novembre 2026, elle n'est gratuite que sur Gemini 2.5 Flash (500 requêtes/jour), et Google annonce que 2.5 Flash sera redirigé vers un autre modèle le 1er décembre 2026. Si la recherche web s'arrête, la veille continue avec Inria, Varbi, IACR et Jobbnorge.
+- **Recherche web Gemini** : elle n'est gratuite que sur Gemini 2.5 Flash, qui n'est plus ouvert aux nouveaux comptes (novembre 2026). Elle est donc désactivée (`recherche: []` dans `config.yaml`) et la veille utilise Inria, Varbi, IACR et Jobbnorge.
 - **Données envoyées à Google** : sur le palier gratuit, Google peut utiliser les textes envoyés à Gemini pour améliorer ses produits. Ton profil part vers Gemini à chaque candidature préparée : n'y mets rien que tu ne veux pas confier à Google (numéros de pièces d'identité, etc.).
 - **Dépôt public** : les offres et les statuts sont visibles de tous ; les lettres, CV et le profil ne le sont jamais.
 - GitHub met en pause les tâches planifiées d'un dépôt sans activité pendant 60 jours ; les commits quotidiens de la veille comptent comme activité.

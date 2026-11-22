@@ -6,13 +6,15 @@ provider: gemini
 # gratuit ou a épuisé son quota, le suivant est utilisé automatiquement.
 modeles:
   # Veille : tri et lecture des pages d'offres (rapide, quota élevé)
-  flash: [gemini-2.5-flash, gemini-3.8-flash, gemini-3.6-flash, gemini-3-flash-preview, gemini-2.5-flash-lite]
+  # (Les modèles 2.5 ne sont plus ouverts aux nouveaux comptes depuis novembre 2026.)
+  flash: [gemini-3.6-flash, gemini-3.8-flash, gemini-3-flash-preview, gemini-3.5-flash-lite, gemini-3.1-flash-lite]
   # Rédaction des lettres et CV (meilleure qualité), repli sur Flash
-  pro: [gemini-2.5-pro, gemini-3.8-flash, gemini-3.6-flash, gemini-2.5-flash]
+  pro: [gemini-3.8-flash, gemini-3.6-flash, gemini-3-flash-preview]
   # Recherche web intégrée (Grounding Google Search) : gratuite seulement sur
-  # ces modèles en novembre 2026. Si elle disparaît, la veille continue avec
-  # les autres sources.
-  recherche: [gemini-2.5-flash, gemini-2.5-flash-lite]
+  # Gemini 2.5 Flash, qui n'est plus ouvert aux nouveaux comptes (diagnostic du
+  # 22/11/2026). Liste vide = la veille utilise Inria, Varbi, IACR et Jobbnorge.
+  # Pour la réactiver un jour : recherche: [nom-du-modele]
+  recherche: []
 
 # Pause entre deux appels (secondes) pour rester sous les limites gratuites
 pause_entre_appels: 6
