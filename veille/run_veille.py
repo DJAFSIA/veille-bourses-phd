@@ -44,12 +44,14 @@ def executer(cfg: dict, modele, base: Base, http=requests) -> list[dict]:
             vues.add(cle)
             pistes.append(p)
     pistes = sources.noter(pistes, v.get("mots_cles_doctorat", []), v.get("mots_cles_domaine", []))
-    pistes = [p for p in pistes if p.score > 0]
+    pistes = [p for p in pistes if p.source == "recherche" or p.score >= int(v.get("score_min", 2))]
     log.info("Pistes nouvelles à vérifier : %d", len(pistes))
 
     nouvelles = []
     for p in pistes[: int(v.get("max_verifications_par_jour", 14))]:
         offre, raison = verifier(p, modele, v.get("profil_veille", ""), auj, http)
+        if offre and offre["pertinence"] < int(v.get("pertinence_min", 3)):
+            offre, raison = None, f"pertinence trop faible ({offre['pertinence']}/5)"
         if offre:
             offre = base.ajouter(offre)
             nouvelles.append({**offre, "statut": "nouvelle"})

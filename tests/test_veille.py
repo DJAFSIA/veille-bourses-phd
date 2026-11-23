@@ -109,3 +109,11 @@ def test_rapport_quotidien():
     assert msg["a_envoyer"] and "1 nouvelle" in msg["sujet"]
     assert "J-3 : A" in msg["texte"] and "C" not in msg["texte"].split("ÉCHÉANCES")[1].split("RELANCES")[0]
     assert "RELANCES" in msg["texte"] and "&lt;script&gt;" in msg["html"] and "<script>" not in msg["telegram"]
+
+
+def test_offres_peu_pertinentes_ecartees(faux_http, page_offre, base_vide, cfg):
+    http = faux_http({"jobs.inria.fr/public/classic/fr/offres/2026-99999": page_offre, "jobs.inria.fr": INRIA})
+    cfg = {**cfg, "sources": {"inria": ["https://jobs.inria.fr/public/classic/fr/offres"], "varbi": [], "pages_liste": []}}
+    m = FauxModele({"verification": {**VERIF_OK, "pertinence": 2}}, recherche_ok=False)
+    assert executer(cfg, m, base_vide, http) == []
+    assert "inria:2026-99999" in base_vide.vus

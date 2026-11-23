@@ -55,8 +55,8 @@ def email(sujet: str, texte: str, html_: str | None = None, pieces: list[Path] =
 
 
 def telegram(texte_html: str, fichiers: list[Path] = ()) -> bool:
-    jeton = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-    chat = os.environ.get("TELEGRAM_CHAT_ID", "")
+    jeton = nettoyer_jeton(os.environ.get("TELEGRAM_BOT_TOKEN", ""))
+    chat = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if essai():
         SORTIE.mkdir(parents=True, exist_ok=True)
         (SORTIE / "telegram.txt").write_text(texte_html, encoding="utf-8")
@@ -71,13 +71,35 @@ def telegram(texte_html: str, fichiers: list[Path] = ()) -> bool:
             "chat_id": chat, "text": morceau, "parse_mode": "HTML", "disable_web_page_preview": "true"})
         ok &= r.ok
         if not r.ok:
-            log.warning("Telegram a refusé le message (%s)", r.status_code)
+            log.warning("Telegram a refusé le message (%s : %s)", r.status_code, _raison_telegram(r))
     for f in fichiers:
         with open(f, "rb") as fh:
             r = requests.post(f"{api}/sendDocument", timeout=60, data={"chat_id": chat},
                               files={"document": (Path(f).name, fh)})
         ok &= r.ok
     return ok
+
+
+def nettoyer_jeton(jeton: str) -> str:
+    """Accepte un jeton collé avec des espaces, des guillemets ou le préfixe « bot »."""
+    j = jeton.strip().strip('"\'').strip()
+    if j.lower().startswith("bot") and ":" in j[3:]:
+        j = j[3:]
+    return j
+
+
+def _raison_telegram(r) -> str:
+    try:
+        d = r.json().get("description", "")
+    except ValueError:
+        d = ""
+    if r.status_code == 404:
+        return "jeton du bot invalide : vérifie le secret TELEGRAM_BOT_TOKEN"
+    if r.status_code == 400 and "chat not found" in d.lower():
+        return "chat introuvable : vérifie TELEGRAM_CHAT_ID et envoie d'abord un message à ton bot"
+    if r.status_code == 401:
+        return "jeton du bot refusé : vérifie TELEGRAM_BOT_TOKEN"
+    return d[:120]
 
 
 def decouper(texte: str, taille: int) -> list[str]:

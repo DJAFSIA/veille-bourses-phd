@@ -21,6 +21,10 @@ pause_entre_appels: 6
 
 veille:
   max_verifications_par_jour: 14
+  # Une offre vérifiée n'entre dans la base que si sa pertinence (1 à 5) atteint ce seuil
+  pertinence_min: 3
+  # Nombre minimal de mots du domaine dans le titre/résumé d'une piste pour qu'on la vérifie
+  score_min: 2
   angles_par_jour: 6
   # Résumé public des centres d'intérêt, utilisé pour noter la pertinence.
   # Le profil complet reste dans le secret PROFIL_CANDIDAT.
@@ -43,13 +47,11 @@ sources:
     - https://jobs.inria.fr/public/classic/fr/offres
     - https://jobs.inria.fr/public/classic/en/offres
   # Universités qui publient leurs offres sur Varbi (flux RSS public)
-  varbi: [kth, oulunyliopisto, su, uu, liu, lu, gu, umu, ltu, slu, kau, mau, miun, du, hig, his, bth, lnu]
+  varbi: [kth, oulunyliopisto, su, uu, lu, umu, ltu, kau, miun]
   # Pages de listes d'offres : on garde les liens qui correspondent au motif
   pages_liste:
     - url: https://www.iacr.org/jobs/
       motif: "/jobs/item/\\d+"
-    - url: https://www.jobbnorge.no/en/available-jobs?Keywords=phd
-      motif: "/available-jobs/job/\\d+"
 
 # 30 angles de recherche web qui tournent : 6 par jour, tout le cycle en 5 jours
 angles:

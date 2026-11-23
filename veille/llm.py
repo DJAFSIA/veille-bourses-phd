@@ -66,6 +66,7 @@ class Gemini:
         self._disponibles: set[str] | None = None
         self._dernier_appel = 0.0
         self._epuises: set[str] = set()
+        self._lenteurs: dict[str, int] = {}
         self.recherche_ok = True
 
     # -- modèles disponibles -------------------------------------------------
@@ -131,7 +132,9 @@ class Gemini:
                 except requests.RequestException as e:
                     erreurs.append(f"{modele}: réseau ({type(e).__name__})")
                     log.warning("[%s] %s ne répond pas (%s) : modèle suivant", tache or "appel", modele, type(e).__name__)
-                    self._epuises.add(modele)  # trop lent : on ne le réessaie pas pendant cette exécution
+                    self._lenteurs[modele] = self._lenteurs.get(modele, 0) + 1
+                    if self._lenteurs[modele] >= 3:  # trop souvent lent : écarté pour cette exécution
+                        self._epuises.add(modele)
                     break
                 if r.status_code == 200:
                     rep = self._lire(r.json(), modele)

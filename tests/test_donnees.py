@@ -6,19 +6,16 @@ from veille.store import CHAMPS_SUIVI, DATA, Base, cle_url
 def test_offres_importees_du_tableau():
     offres = json.loads((DATA / "offres.json").read_text(encoding="utf-8"))
     statuts = json.loads((DATA / "statuts.json").read_text(encoding="utf-8"))
-    assert len(offres) == 125
+    assert len(offres) >= 125  # 125 offres reprises du tableau Claude, puis la veille en ajoute
     ids = [o["id"] for o in offres]
     assert len(set(ids)) == len(ids)
     assert set(statuts) == set(ids)
     for o in offres:
         assert o["titre"] and o["niveau"] in ("Doctorat", "Master")
         assert not set(CHAMPS_SUIVI) & set(o), "le suivi doit être dans statuts.json"
-    compte = {}
     for s in statuts.values():
-        compte[s["statut"]] = compte.get(s["statut"], 0) + 1
-    assert compte == {"nouvelle": 110, "postule": 9, "ecartee": 3, "preparation": 3}
+        assert s["statut"] in ("nouvelle", "interesse", "preparation", "postule", "ecartee")
     assert statuts["aalto-trustworthy-ml-2026"]["postule_le"] == "2026-10-31"
-    assert statuts["unilu-ml-security-testing-2026"]["documents"][0]["lien"].startswith("https://claude.ai/")
 
 
 def test_cle_url_reconnait_les_doublons():

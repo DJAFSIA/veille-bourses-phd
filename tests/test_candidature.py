@@ -142,3 +142,9 @@ def test_tableau_de_bord_lit_les_bons_fichiers():
     html = (RACINE / "site" / "index.html").read_text(encoding="utf-8")
     for attendu in ("data/offres.json", "data/statuts.json", "config.json", "candidature: ", "statut: "):
         assert attendu in html
+
+
+def test_jeton_telegram_nettoye():
+    assert notifications.nettoyer_jeton(' bot123456:ABC-def ') == "123456:ABC-def"
+    assert notifications.nettoyer_jeton('"123456:ABC"') == "123456:ABC"
+    assert notifications.nettoyer_jeton("botanique") == "botanique"
