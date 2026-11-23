@@ -1,5 +1,5 @@
 #!/bin/sh
-# Assemble le tableau de bord dans _site/ (utilisé par GitHub Pages et par Vercel)
+# Assemble le tableau de bord dans _site/ (utilisé par Vercel)
 set -e
 rm -rf _site && mkdir -p _site/data
 cp site/* _site/

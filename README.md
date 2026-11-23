@@ -10,10 +10,11 @@ Tout utilise le palier gratuit de Gemini. Aucun abonnement.
 
 ## Mise en route
 
-### 1. Activer GitHub Pages
-Settings → Pages → Build and deployment → Source : **GitHub Actions**.
-Le tableau de bord sera à l'adresse `https://djafsia.github.io/veille-bourses-phd/`.
-Comme github.io ne s'ouvre pas depuis le Cameroun, il est aussi publié sur Vercel : **https://veille-bourses-phd.vercel.app/** (projet Vercel relié au dépôt, mis à jour à chaque commit, réglages dans `vercel.json`).
+### 1. Tableau de bord sur Vercel
+Le tableau de bord est publié sur Vercel : **https://veille-bourses-phd.vercel.app/** (projet relié au dépôt, réglages dans `vercel.json`).
+Il est protégé par Vercel Authentication : seul ton compte Vercel connecté peut l'ouvrir.
+Après chaque veille ou changement de statut, le robot appelle le Deploy Hook Vercel (secret `VERCEL_DEPLOY_HOOK`) pour reconstruire le tableau.
+Le dépôt est privé ; GitHub Pages n'est donc pas utilisé (payant pour un dépôt privé, et github.io est injoignable depuis le Cameroun).
 
 ### 2. Créer la clé Gemini (gratuite)
 1. Va sur https://aistudio.google.com/apikey avec ton compte Google.
@@ -41,6 +42,7 @@ Settings → Secrets and variables → Actions → **New repository secret**, un
 | `TELEGRAM_CHAT_ID` | ton chat id |
 | `PROFIL_CANDIDAT` | tout le contenu de ton fichier de profil (voir `profil/profil-exemple.md` pour la forme) |
 | `EMAIL_DESTINATAIRE` | facultatif, si les emails doivent aller à une autre adresse |
+| `VERCEL_DEPLOY_HOOK` | lien « Deploy Hook » du projet Vercel (Settings → Git → Deploy Hooks, branche main) |
 
 Le profil reste privé : il n'est jamais écrit dans le dépôt ni dans les journaux.
 
@@ -61,7 +63,7 @@ Relis toujours la lettre et le CV avant d'envoyer : `notes.md` liste ce qui rest
 - **Quotas gratuits** : ils changent souvent. Les modèles sont listés dans `config.yaml` et essayés dans l'ordre ; si l'un disparaît ou n'a plus de quota, le suivant prend le relais.
 - **Recherche web Gemini** : elle n'est gratuite que sur Gemini 2.5 Flash, qui n'est plus ouvert aux nouveaux comptes (novembre 2026). Elle est donc désactivée (`recherche: []` dans `config.yaml`) et la veille utilise Inria, Varbi, IACR et Jobbnorge.
 - **Données envoyées à Google** : sur le palier gratuit, Google peut utiliser les textes envoyés à Gemini pour améliorer ses produits. Ton profil part vers Gemini à chaque candidature préparée : n'y mets rien que tu ne veux pas confier à Google (numéros de pièces d'identité, etc.).
-- **Dépôt public** : les offres et les statuts sont visibles de tous ; les lettres, CV et le profil ne le sont jamais.
+- **Confidentialité** : dépôt GitHub privé et tableau Vercel réservé à ton compte. Les lettres, CV et le profil ne sont jamais écrits dans le dépôt. Un dépôt privé a 2 000 minutes gratuites de GitHub Actions par mois ; la veille en utilise environ 300.
 - GitHub met en pause les tâches planifiées d'un dépôt sans activité pendant 60 jours ; les commits quotidiens de la veille comptent comme activité.
 
 ## Structure

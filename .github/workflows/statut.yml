@@ -7,8 +7,6 @@ on:
 permissions:
   contents: write
   issues: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: donnees
@@ -40,7 +38,8 @@ jobs:
           git diff --cached --quiet || git commit -m "$TITRE_TICKET"
           git pull --rebase && git push
           gh issue close "$NUMERO" -R "$GITHUB_REPOSITORY" --comment "Statut enregistré. Le tableau de bord se met à jour dans une minute."
-
-  tableau:
-    needs: statut
-    uses: ./.github/workflows/pages.yml
+      - name: Mettre à jour le tableau de bord Vercel
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then curl -fsS -X POST "$VERCEL_DEPLOY_HOOK" > /dev/null && echo "Vercel prévenu"; else echo "Secret VERCEL_DEPLOY_HOOK absent"; fi

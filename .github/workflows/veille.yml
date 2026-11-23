@@ -12,8 +12,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: donnees
@@ -53,7 +51,8 @@ jobs:
           git commit -m "Veille du $(TZ=Africa/Douala date +%Y-%m-%d)"
           git pull --rebase
           git push
-
-  tableau:
-    needs: veille
-    uses: ./.github/workflows/pages.yml
+      - name: Mettre à jour le tableau de bord Vercel
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then curl -fsS -X POST "$VERCEL_DEPLOY_HOOK" > /dev/null && echo "Vercel prévenu"; else echo "Secret VERCEL_DEPLOY_HOOK absent"; fi
