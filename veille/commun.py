@@ -18,6 +18,9 @@ def journal():
 
 
 def url_tableau() -> str:
+    adresse = (config().get("url_tableau") or "").strip()
+    if adresse:
+        return adresse
     depot = os.environ.get("GITHUB_REPOSITORY", "")
     if "/" not in depot:
         return ""

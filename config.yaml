@@ -2,6 +2,10 @@
 
 provider: gemini
 
+# Adresse du tableau de bord mise dans les emails et Telegram
+# (github.io est injoignable depuis le Cameroun : on utilise Vercel)
+url_tableau: https://veille-bourses-phd.vercel.app/
+
 # Modèles Gemini essayés dans l'ordre. Si un modèle n'existe plus, n'est pas
 # gratuit ou a épuisé son quota, le suivant est utilisé automatiquement.
 modeles:

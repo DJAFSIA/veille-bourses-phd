@@ -13,6 +13,7 @@ Tout utilise le palier gratuit de Gemini. Aucun abonnement.
 ### 1. Activer GitHub Pages
 Settings → Pages → Build and deployment → Source : **GitHub Actions**.
 Le tableau de bord sera à l'adresse `https://djafsia.github.io/veille-bourses-phd/`.
+Comme github.io ne s'ouvre pas depuis le Cameroun, il est aussi publié sur Vercel : **https://veille-bourses-phd.vercel.app/** (projet Vercel relié au dépôt, mis à jour à chaque commit, réglages dans `vercel.json`).
 
 ### 2. Créer la clé Gemini (gratuite)
 1. Va sur https://aistudio.google.com/apikey avec ton compte Google.
