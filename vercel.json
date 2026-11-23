@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "echo 'rien à installer'",
+  "buildCommand": "sh scripts/assembler-site.sh",
+  "outputDirectory": "_site",
+  "headers": [
+    { "source": "/data/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/config.json", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
+  ]
+}

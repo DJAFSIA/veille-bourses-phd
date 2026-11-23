@@ -27,11 +27,7 @@ jobs:
         with:
           ref: main
       - name: Assembler le site
-        run: |
-          mkdir -p _site/data
-          cp site/* _site/
-          cp data/offres.json data/statuts.json _site/data/
-          printf '{"depot":"%s","maj":"%s"}\n' "$GITHUB_REPOSITORY" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > _site/config.json
+        run: sh scripts/assembler-site.sh
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
