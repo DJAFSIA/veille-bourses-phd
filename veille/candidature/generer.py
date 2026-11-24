@@ -221,9 +221,16 @@ def rendre(cv: dict, lettre: dict, offre: dict, langue: str, dossier: Path) -> d
     chemin_cv = dossier / f"CV_{nom}_{cible}.pdf"
     HTML(string=env.get_template("cv.html").render(cv=cv, langue=langue)).write_pdf(chemin_cv)
     chemin_lettre = dossier / f"Lettre_{nom}_{cible}.pdf"
-    HTML(string=env.get_template("lettre.html").render(
-        lettre=lettre, langue=langue, contact=cv.get("contact", [])[:3], objet=objet,
-        date=date_longue(aujourdhui(), langue))).write_pdf(chemin_lettre)
+    # Une page si possible (mise en page normale, sinon un peu plus serrée) ; sinon deux pages
+    # avec des paragraphes entiers, jamais une phrase seule en haut de la page 2.
+    ctx = dict(lettre=lettre, langue=langue, contact=cv.get("contact", [])[:3], objet=objet,
+               date=date_longue(aujourdhui(), langue))
+    doc = HTML(string=env.get_template("lettre.html").render(**ctx, compact=False)).render()
+    if len(doc.pages) > 1:
+        serre = HTML(string=env.get_template("lettre.html").render(**ctx, compact=True)).render()
+        if len(serre.pages) == 1:
+            doc = serre
+    doc.write_pdf(chemin_lettre)
     chemin_md = dossier / f"Lettre_{nom}_{cible}.md"
     chemin_md.write_text(f"{objet}\n\n{texte_lettre(lettre)}\n", encoding="utf-8")
     return {"cv": chemin_cv, "lettre_pdf": chemin_lettre, "lettre_md": chemin_md}

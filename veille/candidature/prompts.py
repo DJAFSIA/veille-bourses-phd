@@ -80,7 +80,8 @@ CV = REGLES + """
 
 Construis le CV académique en {langue_nom} pour cette offre, à partir du profil UNIQUEMENT.
 Sections, dans cet ordre et avec EXACTEMENT ces titres (en {langue_nom}) : {titres_sections}.
-Omets une section vide. Certifications : seulement celles utiles à la recherche. Langues : avec niveau.
+Omets une section vide. Certifications : seulement celles utiles à la recherche. Langues : une ligne par langue, le nom et le
+niveau seulement, sans justification ni preuve (ex. « English: working proficiency »).
 Antichronologique. Tient sur 2 pages.
 Une ligne de profil adaptée à l'offre (ou "" si rien d'utile). Le nom du candidat en gras dans les
 publications se marque avec **double astérisque**. Pas de score de langue inventé.

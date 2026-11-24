@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <title>{{ lettre.signature }}</title>
 <style>
-  @page { size: A4; margin: 22mm 24mm; }
-  body { font-family: "DejaVu Serif", "Liberation Serif", Georgia, serif; font-size: 10.8pt; line-height: 1.5; color: #111111; }
+  /* compact : marges et interligne un peu réduits, essayé seulement pour tenir sur une page */
+  @page { size: A4; margin: {{ "18mm 22mm" if compact else "22mm 24mm" }}; }
+  body { font-family: "DejaVu Serif", "Liberation Serif", Georgia, serif; font-size: {{ "10.5pt" if compact else "10.8pt" }}; line-height: {{ "1.42" if compact else "1.5" }}; color: #111111; }
   .expediteur { font-size: 9.5pt; color: #444444; margin-bottom: 14pt; border-bottom: 1pt solid #000000; padding-bottom: 6pt; }
   .expediteur b { font-size: 12pt; color: #000000; }
   .date { text-align: right; margin-bottom: 12pt; }
   .objet { font-weight: bold; margin-bottom: 12pt; }
-  p { margin: 0 0 9pt; text-align: justify; hyphens: auto; }
+  /* Pas de coupure de mots ; un paragraphe ne se coupe jamais entre deux pages */
+  p { margin: 0 0 {{ "7pt" if compact else "9pt" }}; text-align: justify; hyphens: manual; break-inside: avoid; orphans: 3; widows: 3; }
+  .fin { break-inside: avoid; }
   .signature { margin-top: 16pt; }
 </style>
 </head>
@@ -19,9 +22,12 @@
 <div class="date">{{ date }}</div>
 <div class="objet">{{ objet }}</div>
 <p>{{ lettre.salutation }}</p>
-{% for p in lettre.paragraphes %}<p>{{ p }}</p>
+{% for p in lettre.paragraphes[:-1] %}<p>{{ p }}</p>
 {% endfor %}
+<div class="fin">
+{% if lettre.paragraphes %}<p>{{ lettre.paragraphes[-1] }}</p>{% endif %}
 <p>{{ lettre.formule_finale }}</p>
 <div class="signature">{{ lettre.signature }}</div>
+</div>
 </body>
 </html>

@@ -162,3 +162,18 @@ def test_titres_sections_dans_la_langue_du_cv():
                                                                 {"titre": "Teaching"}]}, "fr")["sections"]]
     assert fr == ["Formation", "Expérience professionnelle", "Enseignement"]
     assert titres_sections("en").startswith("Education, Publications, Research Experience")
+
+
+def test_lettre_une_page_ou_paragraphes_entiers(tmp_path):
+    from pypdf import PdfReader
+    from veille.candidature.generer import rendre
+    court = lettre([PARAG * 3, PARAG * 3, PARAG * 3, PARAG * 2, "I would welcome the chance to discuss it with you."])
+    f = rendre(CV, court, {"titre": "PhD", "etablissement": "Uni Exemple"}, "en", tmp_path / "a")
+    assert len(PdfReader(f["lettre_pdf"]).pages) == 1
+    long_ = lettre([PARAG * 4] * 3 + [PARAG * 3, "I would welcome the chance to discuss it with you."])
+    f = rendre(CV, long_, {"titre": "PhD", "etablissement": "Uni Exemple"}, "en", tmp_path / "b")
+    pages = PdfReader(f["lettre_pdf"]).pages
+    assert len(pages) == 2
+    haut_p2 = pages[1].extract_text().strip()
+    assert haut_p2.startswith("At Laboratoire Exemple") or haut_p2.startswith("I would welcome")
+    assert "-\n" not in "".join(p.extract_text() for p in pages)
