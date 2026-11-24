@@ -79,9 +79,9 @@ Réponds en JSON : {{"salutation": "...", "paragraphes": ["..."], "formule_final
 CV = REGLES + """
 
 Construis le CV académique en {langue_nom} pour cette offre, à partir du profil UNIQUEMENT.
-Ordre des sections : formation, publications, expérience de recherche, enseignement / formation,
-expérience professionnelle, compétences, certifications (seulement celles utiles à la recherche),
-langues (avec niveau), références. Antichronologique. Tient sur 2 pages.
+Sections, dans cet ordre et avec EXACTEMENT ces titres (en {langue_nom}) : {titres_sections}.
+Omets une section vide. Certifications : seulement celles utiles à la recherche. Langues : avec niveau.
+Antichronologique. Tient sur 2 pages.
 Une ligne de profil adaptée à l'offre (ou "" si rien d'utile). Le nom du candidat en gras dans les
 publications se marque avec **double astérisque**. Pas de score de langue inventé.
 

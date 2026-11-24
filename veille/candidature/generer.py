@@ -31,6 +31,53 @@ MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "ao
            "septembre", "octobre", "novembre", "décembre"]
 
 
+# Titres des sections du CV, dans l'ordre, dans chaque langue. Le modèle les reçoit
+# dans le prompt, et normaliser_sections() corrige ceux qu'il aurait laissés dans l'autre langue.
+SECTIONS_CV = [
+    ("formation", "Formation", "Education"),
+    ("publications", "Publications", "Publications"),
+    ("recherche", "Expérience de recherche", "Research Experience"),
+    ("enseignement", "Enseignement", "Teaching Experience"),
+    ("pro", "Expérience professionnelle", "Professional Experience"),
+    ("competences", "Compétences", "Skills"),
+    ("certifications", "Certifications", "Certifications"),
+    ("langues", "Langues", "Languages"),
+    ("references", "Références", "References"),
+]
+# Mots qui reconnaissent une section, quelle que soit sa langue (ordre important :
+# « Enseignement et formation » doit être reconnu comme enseignement, pas formation).
+_MOTS_SECTIONS = [
+    ("publications", ("publication",)),
+    ("recherche", ("recherche", "research")),
+    ("enseignement", ("enseign", "teach", "tutor", "tutorat")),
+    ("pro", ("professionnel", "professional", "work experience", "employment", "emploi")),
+    ("competences", ("competence", "skill")),
+    ("certifications", ("certif",)),
+    ("langues", ("langue", "language")),
+    ("references", ("reference", "referee")),
+    ("formation", ("formation", "education", "diplome", "degree")),
+]
+
+
+def titres_sections(langue: str) -> str:
+    i = 1 if langue == "fr" else 2
+    return ", ".join(t[i] for t in SECTIONS_CV)
+
+
+def normaliser_sections(cv: dict, langue: str) -> dict:
+    """Met chaque titre de section connu dans la langue du CV."""
+    import unicodedata
+    i = 1 if langue == "fr" else 2
+    noms = {t[0]: t[i] for t in SECTIONS_CV}
+    for s in cv.get("sections", []) or []:
+        brut = unicodedata.normalize("NFKD", str(s.get("titre", ""))).encode("ascii", "ignore").decode().lower()
+        for cle, mots in _MOTS_SECTIONS:
+            if any(m in brut for m in mots):
+                s["titre"] = noms[cle]
+                break
+    return cv
+
+
 def lire_titre(titre: str):
     m = re.match(r"\s*candidature\s*:\s*(\S+)(?:\s+accroche\s*=\s*([123]))?\s*$", titre or "", re.I)
     if not m:
@@ -116,7 +163,8 @@ class Generateur:
 
     def cv(self, offre, page, langue):
         ctx = self._contexte(offre, page)
-        cv = self._json(prompts.CV.format(**ctx, langue_nom="anglais" if langue == "en" else "français"), "cv")
+        cv = self._json(prompts.CV.format(**ctx, langue_nom="anglais" if langue == "en" else "français",
+                                          titres_sections=titres_sections(langue)), "cv")
         restants = []
         for _ in range(2):
             restants = controle.problemes_texte(texte_cv(cv), self.profil, self.interdits)
@@ -124,7 +172,7 @@ class Generateur:
                 break
             cv = self._json(prompts.CORRECTION_CV.format(**ctx, cv=json.dumps(cv, ensure_ascii=False),
                                                          problemes="; ".join(restants)), "correction_cv")
-        return cv, restants
+        return normaliser_sections(cv, langue), restants
 
 
 # -- mise en forme -------------------------------------------------------------

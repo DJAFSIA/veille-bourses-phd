@@ -148,3 +148,17 @@ def test_jeton_telegram_nettoye():
     assert notifications.nettoyer_jeton(' bot123456:ABC-def ') == "123456:ABC-def"
     assert notifications.nettoyer_jeton('"123456:ABC"') == "123456:ABC"
     assert notifications.nettoyer_jeton("botanique") == "botanique"
+
+
+def test_titres_sections_dans_la_langue_du_cv():
+    from veille.candidature.generer import normaliser_sections, titres_sections
+    cv = {"sections": [{"titre": "FORMATION"}, {"titre": "Publications"}, {"titre": "EXPÉRIENCE DE RECHERCHE"},
+                       {"titre": "Enseignement et formation"}, {"titre": "Compétences techniques"},
+                       {"titre": "Langues"}, {"titre": "Prix et distinctions"}]}
+    en = [s["titre"] for s in normaliser_sections(cv, "en")["sections"]]
+    assert en == ["Education", "Publications", "Research Experience", "Teaching Experience", "Skills",
+                  "Languages", "Prix et distinctions"]
+    fr = [s["titre"] for s in normaliser_sections({"sections": [{"titre": "Education"}, {"titre": "Work Experience"},
+                                                                {"titre": "Teaching"}]}, "fr")["sections"]]
+    assert fr == ["Formation", "Expérience professionnelle", "Enseignement"]
+    assert titres_sections("en").startswith("Education, Publications, Research Experience")
