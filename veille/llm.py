@@ -62,6 +62,11 @@ class Gemini:
         self.cle = cle
         self.modeles = modeles
         self.pause = pause
+        # Attentes (s) avant de refaire un tour quand tous les modèles sont surchargés,
+        # plafonnées à 8 minutes par exécution pour ne pas bloquer la veille.
+        self.attentes_surcharge = [60, 120, 240]
+        self.attente_max = 480
+        self._attendu = 0
         self.http = session or requests.Session()
         self._disponibles: set[str] | None = None
         self._dernier_appel = 0.0
@@ -121,43 +126,58 @@ class Gemini:
 
         modeles = self.candidats("recherche" if recherche else niveau)
         erreurs = []
-        for modele in modeles:
-            for essai in range(2):
-                self._attendre()
-                try:
-                    r = self.http.post(f"{API}/models/{modele}:generateContent",
-                                       headers={"x-goog-api-key": self.cle,
-                                                "Content-Type": "application/json"},
-                                       data=json.dumps(corps), timeout=90)
-                except requests.RequestException as e:
-                    erreurs.append(f"{modele}: réseau ({type(e).__name__})")
-                    log.warning("[%s] %s ne répond pas (%s) : modèle suivant", tache or "appel", modele, type(e).__name__)
-                    self._lenteurs[modele] = self._lenteurs.get(modele, 0) + 1
-                    if self._lenteurs[modele] >= 3:  # trop souvent lent : écarté pour cette exécution
-                        self._epuises.add(modele)
+        # Si TOUS les modèles sont surchargés (503 « high demand ») ou injoignables, Google
+        # demande de réessayer plus tard : on attend puis on refait un tour complet.
+        for tour in range(len(self.attentes_surcharge) + 1):
+            if tour:
+                if self._attendu + self.attentes_surcharge[tour - 1] > self.attente_max:
                     break
-                if r.status_code == 200:
-                    rep = self._lire(r.json(), modele)
-                    if rep.texte.strip():
-                        log.info("[%s] %s → %s", tache or "appel", niveau, modele)
-                        return rep
-                    erreurs.append(f"{modele}: réponse vide")
-                    break
-                message = _message(r)
-                erreurs.append(f"{modele}: {r.status_code} {message[:120]}")
-                log.warning("[%s] %s refusé (%s %s)", tache or "appel", modele, r.status_code, message[:100])
-                if r.status_code == 429:
-                    bas = message.lower()
-                    if "per day" in bas or "perday" in bas or essai:
-                        self._epuises.add(modele)  # quota du jour épuisé : modèle suivant
+                self._attendu += self.attentes_surcharge[tour - 1]
+                log.warning("[%s] tous les modèles sont surchargés : nouvel essai dans %s s",
+                            tache or "appel", self.attentes_surcharge[tour - 1])
+                time.sleep(self.attentes_surcharge[tour - 1])
+                modeles = self.candidats("recherche" if recherche else niveau)
+            debut_tour = len(erreurs)
+            for modele in modeles:
+                for essai in range(2):
+                    self._attendre()
+                    try:
+                        r = self.http.post(f"{API}/models/{modele}:generateContent",
+                                           headers={"x-goog-api-key": self.cle,
+                                                    "Content-Type": "application/json"},
+                                           data=json.dumps(corps), timeout=90)
+                    except requests.RequestException as e:
+                        erreurs.append(f"{modele}: réseau ({type(e).__name__})")
+                        log.warning("[%s] %s ne répond pas (%s) : modèle suivant", tache or "appel", modele, type(e).__name__)
+                        self._lenteurs[modele] = self._lenteurs.get(modele, 0) + 1
+                        if self._lenteurs[modele] >= 3:  # trop souvent lent : écarté pour cette exécution
+                            self._epuises.add(modele)
                         break
-                    time.sleep(min(_retry_after(r), 60))
-                    continue
-                if r.status_code >= 500:
-                    time.sleep(5)
-                    continue
-                # 400/403/404 : modèle absent, payant, ou outil non disponible
-                break
+                    if r.status_code == 200:
+                        rep = self._lire(r.json(), modele)
+                        if rep.texte.strip():
+                            log.info("[%s] %s → %s", tache or "appel", niveau, modele)
+                            return rep
+                        erreurs.append(f"{modele}: réponse vide")
+                        break
+                    message = _message(r)
+                    erreurs.append(f"{modele}: {r.status_code} {message[:120]}")
+                    log.warning("[%s] %s refusé (%s %s)", tache or "appel", modele, r.status_code, message[:100])
+                    if r.status_code == 429:
+                        bas = message.lower()
+                        if "per day" in bas or "perday" in bas or essai:
+                            self._epuises.add(modele)  # quota du jour épuisé : modèle suivant
+                            break
+                        time.sleep(min(_retry_after(r), 60))
+                        continue
+                    if r.status_code >= 500:
+                        time.sleep(5)
+                        continue
+                    # 400/403/404 : modèle absent, payant, ou outil non disponible
+                    break
+            du_tour = erreurs[debut_tour:]
+            if not du_tour or not all(re.search(r": (5\d\d|réseau)", e) for e in du_tour):
+                break  # quota, modèle absent… : attendre ne servirait à rien
         if recherche:
             self.recherche_ok = False
             raise RechercheIndisponible("; ".join(erreurs) or "aucun modèle de recherche")

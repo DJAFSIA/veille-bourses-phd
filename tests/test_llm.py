@@ -95,3 +95,28 @@ def test_recherche_desactivee_par_liste_vide():
     with pytest.raises(RechercheIndisponible):
         g.generer("x", recherche=True)
     assert s.appels == []
+
+
+def test_surcharge_generale_on_attend_et_on_reessaie(monkeypatch):
+    import veille.llm as llm
+    monkeypatch.setattr(llm.time, "sleep", lambda s: None)
+    surcharge = (503, {"error": {"message": "This model is currently experiencing high demand."}})
+
+    class Session(SessionGemini):
+        def post(self, url, **kw):
+            # tout est surchargé pendant les 4 premiers appels (un tour complet), puis ça répond
+            if len(self.appels) >= 4:
+                self.comportements = {"gemini-2.5-flash": ok("bonjour")}
+            return super().post(url, **kw)
+
+    s = Session({"gemini-2.5-flash": surcharge, "gemini-3.8-flash": surcharge})
+    g = Gemini("cle", MODELES, pause=0, session=s)
+    assert g.generer("x").texte == "bonjour"
+    assert g._attendu == 60
+
+    # quota ou modèle absent : pas d'attente inutile
+    s2 = SessionGemini({"gemini-2.5-flash": (404, {"error": {"message": "not found"}})})
+    g2 = Gemini("cle", MODELES, pause=0, session=s2)
+    with pytest.raises(LLMError):
+        g2.generer("x")
+    assert g2._attendu == 0
