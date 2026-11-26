@@ -34,7 +34,9 @@ button{font:inherit;color:inherit}
 .chiffre{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .gros{font-family:var(--titre);font-size:80px;line-height:1;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .unite{font-size:20px;font-weight:500}
-.top5{font-weight:600;color:var(--vert)}
+.top5{font:inherit;font-weight:600;color:var(--vert);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.top5:hover{opacity:.8}
+.top5[aria-pressed="true"]{text-decoration-thickness:2px}
 .sous{margin:6px 0 0;color:var(--gris)}
 
 .actions{display:flex;gap:28px;flex-wrap:wrap}
@@ -170,7 +172,7 @@ button{font:inherit;color:inherit}
   <main style="display:contents">
     <section class="resume" aria-live="polite">
       <span class="sur">À examiner</span>
-      <div class="chiffre"><span class="gros" id="n-examiner">…</span><span class="unite">offres</span><span class="top5" id="n-top"></span></div>
+      <div class="chiffre"><span class="gros" id="n-examiner">…</span><span class="unite">offres</span><button type="button" class="top5" id="n-top" hidden></button></div>
       <p class="sous" id="sous">Chargement des offres…</p>
     </section>
 
@@ -222,7 +224,7 @@ button{font:inherit;color:inherit}
 const C={noir:"#0B0B0C",orange:"#C4320A",bleu:"#1F5FD1",vert:"#087A50",gris:"#6B7078"};
 const ACTIFS=["nouvelle","interesse","preparation"];
 const NOM={nouvelle:"Nouvelle",interesse:"Gardée",preparation:"En préparation",postule:"Postulée",ecartee:"Écartée"};
-const MODES={top:"Offres à préparer en priorité : correspondance 4/5 ou plus, encore ouvertes.",relance:"Candidatures à relancer : 14 jours après l'envoi, sans réponse notée.",docs:"Offres qui ont déjà un dossier de candidature."};
+const MODES={top5:"Offres à examiner avec 5/5 de correspondance, encore ouvertes.",top:"Offres à préparer en priorité : correspondance 4/5 ou plus, encore ouvertes.",relance:"Candidatures à relancer : 14 jours après l'envoi, sans réponse notée.",docs:"Offres qui ont déjà un dossier de candidature."};
 const VIDES=new Set(["of","de","du","des","la","le","les","the","and","et","for","für","di","del","der","und","d","l"]);
 let offres=[],onglet="traiter",mode="",choisie="",depot="";
 const $=s=>document.querySelector(s);
@@ -281,7 +283,8 @@ function phraseEcheance(o){
 function visibles(){
   const reg=$("#f-region").value,q=$("#f-texte").value.trim().toLowerCase();
   return offres.filter(o=>{
-    if(mode==="top"){if(!(ACTIFS.includes(o.statut)&&(+o.pertinence||0)>=4&&ouverte(o)))return false}
+    if(mode==="top5"){if(!(["nouvelle","interesse"].includes(o.statut)&&(+o.pertinence||0)>=5&&ouverte(o)))return false}
+    else if(mode==="top"){if(!(ACTIFS.includes(o.statut)&&(+o.pertinence||0)>=4&&ouverte(o)))return false}
     else if(mode==="relance"){if(!relanceDue(o))return false}
     else if(mode==="docs"){if(!docsDe(o).length)return false}
     else if(onglet==="traiter"&&!ACTIFS.includes(o.statut))return false;
@@ -329,7 +332,7 @@ function resume(){
   const nPost=offres.filter(o=>o.statut==="postule").length,nPrep=offres.filter(o=>o.statut==="preparation").length;
   const nRel=offres.filter(relanceDue).length;
   $("#n-examiner").textContent=examiner.length;
-  $("#n-top").textContent=top?`dont ${top} à 5/5 de correspondance`:"";
+  {const t=$("#n-top");t.hidden=!top;t.textContent=top?`dont ${top} à 5/5 de correspondance`:"";t.setAttribute("aria-pressed",String(mode==="top5"))}
   $("#sous").textContent=`${n14} date${n14>1?"s":""} limite${n14>1?"s":""} dans les 14 jours · ${nPost} candidature${nPost>1?"s":""} envoyée${nPost>1?"s":""} · ${nPrep} en préparation`;
   const b=$("#badge-relance");b.hidden=!nRel;b.textContent=nRel;
 }
@@ -412,6 +415,7 @@ $("#aide-fermer").addEventListener("click",()=>{$("#aide").hidden=true});
 document.querySelectorAll(".segment button").forEach(b=>b.addEventListener("click",()=>{onglet=b.dataset.onglet;mode="";rendre()}));
 document.querySelectorAll(".action[data-mode]").forEach(b=>b.addEventListener("click",()=>{mode=mode===b.dataset.mode?"":b.dataset.mode;rendre()}));
 document.querySelector('.action[data-action="chercher"]').addEventListener("click",()=>{const i=$("#f-texte");i.focus();i.scrollIntoView({block:"center",behavior:"smooth"})});
+$("#n-top").addEventListener("click",()=>{mode=mode==="top5"?"":"top5";rendre();$("#liste").scrollIntoView({behavior:"smooth",block:"start"})});
 $("#bandeau-effacer").addEventListener("click",()=>{mode="";rendre()});
 ["#f-region","#f-tri"].forEach(s=>$(s).addEventListener("change",rendre));
 $("#f-texte").addEventListener("input",rendre);
